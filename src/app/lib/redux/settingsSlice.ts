@@ -13,14 +13,24 @@ export interface Settings {
     skills: boolean;
     custom: boolean;
   };
+  formSections:{
+    profile:boolean;
+    workExperiences: boolean;
+    educations: boolean;
+    projects: boolean;
+    skills: boolean;
+    custom: boolean;
+  }
+  
   formToHeading: {
+    profile:string;
     workExperiences: string;
     educations: string;
     projects: string;
     skills: string;
     custom: string;
   };
-  formsOrder: ShowForm[];
+  formsOrder: showOrder[];
   showBulletPoints: {
     educations: boolean;
     projects: boolean;
@@ -29,11 +39,13 @@ export interface Settings {
   };
 }
 
+
+export type showOrder = keyof Settings["formSections"];
 export type ShowForm = keyof Settings["formToShow"];
 export type FormWithBulletPoints = keyof Settings["showBulletPoints"];
 export type GeneralSetting = Exclude<
   keyof Settings,
-  "formToShow" | "formToHeading" | "formsOrder" | "showBulletPoints"
+  "formToShow" | "formSections" | "formToHeading" | "formsOrder" | "showBulletPoints"
 >;
 
 export const DEFAULT_THEME_COLOR = "#38bdf8"; // sky-400
@@ -53,6 +65,14 @@ export const initialSettings: Settings = {
     skills: true,
     custom: false,
   },
+  formSections: {
+    profile:true,
+    workExperiences: true,
+    educations: true,
+    projects: true,
+    skills: true,
+    custom: false,
+  },
   formToHeading: {
     workExperiences: "WORK EXPERIENCE",
     educations: "EDUCATION",
@@ -60,7 +80,7 @@ export const initialSettings: Settings = {
     skills: "SKILLS",
     custom: "CUSTOM SECTION",
   },
-  formsOrder: ["workExperiences", "educations", "projects", "skills", "custom"],
+  formsOrder: ["profile","workExperiences", "educations", "projects", "skills", "custom"],
   showBulletPoints: {
     educations: true,
     projects: true,
@@ -82,23 +102,24 @@ export const settingsSlice = createSlice({
     },
     changeShowForm: (
       draft,
-      action: PayloadAction<{ field: ShowForm; value: boolean }>
+      action: PayloadAction<{ field: showOrder; value: boolean }>
     ) => {
       const { field, value } = action.payload;
       draft.formToShow[field] = value;
     },
     changeFormHeading: (
       draft,
-      action: PayloadAction<{ field: ShowForm; value: string }>
+      action: PayloadAction<{ field: showOrder; value: string }>
     ) => {
       const { field, value } = action.payload;
       draft.formToHeading[field] = value;
     },
     changeFormOrder: (
       draft,
-      action: PayloadAction<{ form: ShowForm; type: "up" | "down" }>
+      action: PayloadAction<{ form: showOrder; type: "up" | "down" }>
     ) => {
       const { form, type } = action.payload;
+      
       const lastIdx = draft.formsOrder.length - 1;
       const pos = draft.formsOrder.indexOf(form);
       const newPos = type === "up" ? pos - 1 : pos + 1;
@@ -130,6 +151,7 @@ export const settingsSlice = createSlice({
 export const {
   changeSettings,
   changeShowForm,
+  
   changeFormHeading,
   changeFormOrder,
   changeShowBulletPoints,
@@ -145,13 +167,13 @@ export const selectShowByForm = (form: ShowForm) => (state: RootState) =>
 
 export const selectFormToHeading = (state: RootState) =>
   state.settings.formToHeading;
-export const selectHeadingByForm = (form: ShowForm) => (state: RootState) =>
+export const selectHeadingByForm = (form: showOrder) => (state: RootState) =>
   state.settings.formToHeading[form];
 
 export const selectFormsOrder = (state: RootState) => state.settings.formsOrder;
-export const selectIsFirstForm = (form: ShowForm) => (state: RootState) =>
+export const selectIsFirstForm = (form: showOrder) => (state: RootState) =>
   state.settings.formsOrder[0] === form;
-export const selectIsLastForm = (form: ShowForm) => (state: RootState) =>
+export const selectIsLastForm = (form: showOrder) => (state: RootState) =>
   state.settings.formsOrder[state.settings.formsOrder.length - 1] === form;
 
 export const selectShowBulletPoints =

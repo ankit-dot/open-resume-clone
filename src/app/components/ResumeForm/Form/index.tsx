@@ -14,6 +14,7 @@ import {
   selectIsLastForm,
   selectShowByForm,
   ShowForm,
+  showOrder,
 } from "lib/redux/settingsSlice";
 import {
   BuildingOfficeIcon,
@@ -46,7 +47,10 @@ export const BaseForm = ({
   </section>
 );
 
-const FORM_TO_ICON: { [section in ShowForm]: typeof BuildingOfficeIcon } = {
+const showForm = true;
+const heading = "heading";
+const FORM_TO_ICON: { [section in showOrder]: typeof BuildingOfficeIcon } = {
+  profile:BuildingOfficeIcon,
   workExperiences: BuildingOfficeIcon,
   educations: AcademicCapIcon,
   projects: LightBulbIcon,
@@ -55,16 +59,19 @@ const FORM_TO_ICON: { [section in ShowForm]: typeof BuildingOfficeIcon } = {
 };
 
 export const Form = ({
+
   form,
+  formOrder,
   addButtonText,
   children,
 }: {
-  form: ShowForm;
+  form: showOrder;
+  formOrder:showOrder;
   addButtonText?: string;
   children: React.ReactNode;
 }) => {
-  const showForm = useAppSelector(selectShowByForm(form));
-  const heading = useAppSelector(selectHeadingByForm(form));
+  // const showForm = useAppSelector(selectShowByForm(form));
+  // const heading = useAppSelector(selectHeadingByForm(form));
 
   const dispatch = useAppDispatch();
   const setShowForm = (showForm: boolean) => {
@@ -74,8 +81,8 @@ export const Form = ({
     dispatch(changeFormHeading({ field: form, value: heading }));
   };
 
-  const isFirstForm = useAppSelector(selectIsFirstForm(form));
-  const isLastForm = useAppSelector(selectIsLastForm(form));
+  const isFirstForm = useAppSelector(selectIsFirstForm(formOrder));
+  const isLastForm = useAppSelector(selectIsLastForm(formOrder));
 
   const handleMoveClick = (type: "up" | "down") => {
     dispatch(changeFormOrder({ form, type }));

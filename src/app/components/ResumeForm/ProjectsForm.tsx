@@ -14,7 +14,7 @@ export const ProjectsForm = () => {
   const showDelete = projects.length > 1;
 
   return (
-    <Form form="projects" addButtonText="Add Project">
+    <Form form="projects" formOrder="projects" addButtonText="Add Project">
       {projects.map(({ project, date, descriptions }, idx) => {
         const handleProjectChange = (
           ...[
@@ -31,6 +31,7 @@ export const ProjectsForm = () => {
           <FormSection
             key={idx}
             form="projects"
+            
             idx={idx}
             showMoveUp={showMoveUp}
             showMoveDown={showMoveDown}

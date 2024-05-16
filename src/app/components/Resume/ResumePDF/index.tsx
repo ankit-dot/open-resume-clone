@@ -7,7 +7,7 @@ import { ResumePDFProject } from "components/Resume/ResumePDF/ResumePDFProject";
 import { ResumePDFSkills } from "components/Resume/ResumePDF/ResumePDFSkills";
 import { ResumePDFCustom } from "components/Resume/ResumePDF/ResumePDFCustom";
 import { DEFAULT_FONT_COLOR } from "lib/redux/settingsSlice";
-import type { Settings, ShowForm } from "lib/redux/settingsSlice";
+import type { Settings, ShowForm, showOrder } from "lib/redux/settingsSlice";
 import type { Resume } from "lib/redux/types";
 import { SuppressResumePDFErrorMessage } from "components/Resume/ResumePDF/common/SuppressResumePDFErrorMessage";
 
@@ -51,7 +51,17 @@ export const ResumePDF = ({
 
   const showFormsOrder = formsOrder.filter((form) => formToShow[form]);
 
-  const formTypeToComponent: { [type in ShowForm]: () => JSX.Element } = {
+  const formTypeToComponent: { [type in showOrder]: () => JSX.Element } = {
+
+    profile: () => (
+      <ResumePDFProfile
+        profile= {profile}
+        themeColor={themeColor}
+        isPDF={true}
+      >
+        
+      </ResumePDFProfile>
+    ),
     workExperiences: () => (
       <ResumePDFWorkExperience
         heading={formToHeading["workExperiences"]}
