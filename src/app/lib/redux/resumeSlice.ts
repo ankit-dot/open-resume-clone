@@ -9,7 +9,7 @@ import type {
   ResumeSkills,
   ResumeWorkExperience,
 } from "lib/redux/types";
-import type { ShowForm } from "lib/redux/settingsSlice";
+import type { ShowForm, showOrder } from "lib/redux/settingsSlice";
 
 export const initialProfile: ResumeProfile = {
   name: "",
@@ -141,7 +141,7 @@ export const resumeSlice = createSlice({
       const { value } = action.payload;
       draft.custom.descriptions = value;
     },
-    addSectionInForm: (draft, action: PayloadAction<{ form: ShowForm }>) => {
+    addSectionInForm: (draft, action: PayloadAction<{ form: showOrder }>) => {
       const { form } = action.payload;
       switch (form) {
         case "workExperiences": {
@@ -161,13 +161,15 @@ export const resumeSlice = createSlice({
     moveSectionInForm: (
       draft,
       action: PayloadAction<{
-        form: ShowForm;
+        form: showOrder;
         idx: number;
         direction: "up" | "down";
       }>
     ) => {
+     
       const { form, idx, direction } = action.payload;
-      if (form !== "skills" && form !== "custom") {
+     
+      if (form !== "skills" && form !== "custom" && form !== "profile") {
         if (
           (idx === 0 && direction === "up") ||
           (idx === draft[form].length - 1 && direction === "down")
@@ -187,10 +189,10 @@ export const resumeSlice = createSlice({
     },
     deleteSectionInFormByIdx: (
       draft,
-      action: PayloadAction<{ form: ShowForm; idx: number }>
+      action: PayloadAction<{ form: showOrder; idx: number }>
     ) => {
       const { form, idx } = action.payload;
-      if (form !== "skills" && form !== "custom") {
+      if (form !== "skills" && form !== "custom" && form !=="profile") {
         draft[form].splice(idx, 1);
       }
     },

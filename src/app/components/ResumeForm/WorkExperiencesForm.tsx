@@ -18,7 +18,7 @@ export const WorkExperiencesForm = () => {
   const showDelete = workExperiences.length > 1;
 
   return (
-    <Form form="workExperiences" addButtonText="Add Job">
+    <Form form="workExperiences" formOrder = "workExperiences" addButtonText="Add Job">
       {workExperiences.map(({ company, jobTitle, date, descriptions }, idx) => {
         const handleWorkExperienceChange = (
           ...[

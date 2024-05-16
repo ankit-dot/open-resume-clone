@@ -1,4 +1,4 @@
-import { BaseForm } from "components/ResumeForm/Form";
+import { BaseForm, Form, FormSection } from "components/ResumeForm/Form";
 import { Input, Textarea } from "components/ResumeForm/Form/InputGroup";
 import { useAppDispatch, useAppSelector } from "lib/redux/hooks";
 import { changeProfile, selectProfile } from "lib/redux/resumeSlice";
@@ -14,6 +14,7 @@ export const ProfileForm = () => {
   };
 
   return (
+   <Form form = "profile" formOrder="profile">
     <BaseForm>
       <div className="grid grid-cols-6 gap-3">
         <Input
@@ -66,5 +67,7 @@ export const ProfileForm = () => {
         />
       </div>
     </BaseForm>
+    </Form>
+   
   );
 };
